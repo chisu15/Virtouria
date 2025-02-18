@@ -106,12 +106,13 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/auth.controller')
-const { verifyAccessToken } = require('../helpers/jwt_service')
+const { verifyAccessToken } = require('../helpers/jwt_service');
+const { verifyRole } = require('../middlewares/verify.middleware');
 
-router.get('/', controller.index);
-// router.get('/', verifyAccessToken('Admin'), controller.index);
-// router.post('/signup', controller.signup);
-// router.post('/login', controller.login);
+// router.get('/', controller.index);
+router.get('/', verifyRole('admin'), controller.index);
+router.post('/signup', controller.signup);
+router.post('/login', controller.login);
 // router.post("/refresh-token", controller.refreshToken);
 
 module.exports = router

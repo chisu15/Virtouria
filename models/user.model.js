@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const Role = require('./role.model');
 
 const UserSchema = new mongoose.Schema({
   username:{
@@ -24,25 +23,15 @@ const UserSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    required: true
   },
   role: {
-    type: mongoose.Types.ObjectId,
-    ref: Role
+    type: String,
+    required: true,
+    default: "user"
   }
 }, {
   timestamps: true,
   collection: 'User'
-});
-
-// Hash mật khẩu trước khi lưu
-UserSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
 
 // Phương thức so sánh mật khẩu

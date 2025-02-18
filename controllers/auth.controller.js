@@ -39,8 +39,7 @@ module.exports.index = async (req, res) => {
 
 module.exports.signup = async (req, res) => {
   try {
-    const { username, password, email, role } = req.body
-    console.log(req.body)
+    const { username, password, email, phone, avatar} = req.body
     const { error } = userValidate(req.body)
     if (error) {
       throw createError(error.details[0].message)
@@ -57,8 +56,8 @@ module.exports.signup = async (req, res) => {
       username,
       password: hashedPassword,
       email,
-      fullName,
-      role,
+      phone,
+      avatar,
     })
     await user.save()
     res.json({
@@ -75,14 +74,18 @@ module.exports.signup = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body
+    const { email, password } = req.body
+    const { error } = userValidate(req.body)
+    if (error) {
+      throw createError(error.details[0].message)
+    }
     const user = await User.findOne({
-      username,
+      email,
     })
     if (!user)
       return res.json({
         code: 400,
-        message: 'Not found user',
+        message: 'User not registered',
       })
 
     const validPass = await bcrypt.compare(password, user.password)
@@ -94,23 +97,11 @@ module.exports.login = async (req, res) => {
 
     const accessToken = await signAccessToken(user._id)
     const refreshToken = await signRefreshToken(user._id)
-    const expireAt = new Date(Date.now() + parseInt(process.env.EXPIRE_TIME))
-    console.log('ExpireAt---------: ', expireAt)
-    const session = new Session({
-      type: 'user',
-      userId: user.ID,
-      token: accessToken,
-      expired: false,
-      expireAt: expireAt,
-    })
-    await session.save()
-
-    scheduleSessionExpiry(session.id, session.expireAt)
-
     res.header('Authorization', `bearer ${accessToken}`).send({
       code: 200,
       message: 'Login success',
-      token: accessToken,
+      accessToken: accessToken,
+      refreshToken: refreshToken
     })
   } catch (error) {
     res.json({
