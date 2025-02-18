@@ -6,7 +6,7 @@
 
 /**
  * @swagger
- * /api/v1/auth:
+ * /api/v1/auth?page=page&size=size:
  *   get:
  *     summary: Returns the list of all users (Admin only)
  *     parameters:

@@ -9,15 +9,17 @@ const {
   verifyAccessToken,
 } = require('../helpers/jwt_service')
 const { userValidate } = require('../helpers/validation')
+const { paginationDTO } = require('../models/default.dto')
 
 module.exports.index = async (req, res) => {
   try {
-    const { page, size } = req.query
-    console.log(page, size)
+    const page = req.query.page || paginationDTO.page
+    const size = req.query.size || paginationDTO.size
     const userList = await User.find({})
       .skip((page - 1) * size)
       .limit(size)
       .select('-password')
+    const total = await User.countDocuments({})
     if (userList.length === 0) {
       return res.json({
         code: 204,
@@ -28,6 +30,11 @@ module.exports.index = async (req, res) => {
       code: 200,
       message: 'Get data success',
       data: userList,
+      pagination: {
+        total: total,
+        size: size,
+        page: page,
+      },
     })
   } catch (error) {
     res.json({
@@ -39,7 +46,7 @@ module.exports.index = async (req, res) => {
 
 module.exports.signup = async (req, res) => {
   try {
-    const { username, password, email, phone, avatar} = req.body
+    const { username, password, email, phone, avatar } = req.body
     const { error } = userValidate(req.body)
     if (error) {
       throw createError(error.details[0].message)
@@ -101,7 +108,7 @@ module.exports.login = async (req, res) => {
       code: 200,
       message: 'Login success',
       accessToken: accessToken,
-      refreshToken: refreshToken
+      refreshToken: refreshToken,
     })
   } catch (error) {
     res.json({
