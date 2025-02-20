@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const slugify = require('slugify')
 
 const TourSchema = new mongoose.Schema(
     {
@@ -50,7 +50,7 @@ TourSchema.pre("save", async function (next) {
     }
 });
 
-TourSchema.pre("updateOne", function (next) {
+TourSchema.pre("findOneAndUpdate", function (next) {
     let title = this._update.title;
     if (title && typeof title === "string") {
         this._update.$set.slug = slugify(title, {
