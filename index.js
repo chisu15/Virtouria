@@ -14,7 +14,7 @@ db.connect();
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static('public'))
 
 // app.use('/uploads', express.static('/uploads/'));
 // ROUTE
