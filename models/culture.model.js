@@ -36,6 +36,7 @@ const CultureSchema = new mongoose.Schema(
     category_id: {
       type: mongoose.Types.ObjectId,
       ref: Category,
+      require: true
     },
   },
   {

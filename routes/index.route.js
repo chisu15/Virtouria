@@ -9,7 +9,7 @@ const authRoute = require('./auth.route.js');
 module.exports = (app) => {
     const version = '/api/v1';
     app.use(version + '/category', categoryRoute);
-    // app.use(version + '/culture', cultureRoute);
+    app.use(version + '/culture', cultureRoute);
     app.use(version + '/mediafile', mediafileRoute);
     // app.use(version + '/review', reviewRoute);
     app.use(version + '/tour', tourRoute);
