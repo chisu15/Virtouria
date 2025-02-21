@@ -37,9 +37,30 @@ const verifyAccessToken = () => {
           message: err.message,
         })
       }
-      req.payload = payload
+      req.user = payload
       next()
     })
+  }
+}
+
+const verifyOptionalToken = () => {
+  return async (req, res, next) => {
+    try {
+      const authHeader = req.headers['authorization']
+
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1]
+        const payload = jwt.verify(token, process.env.ADMIN_JWT_SECRET)
+        req.user = payload
+      } else {
+        req.user = null
+      }
+
+      next()
+    } catch (error) {
+      req.user = null
+      next()
+    }
   }
 }
 
@@ -78,6 +99,7 @@ const verifyRefreshToken = async (refreshToken) => {
 module.exports = {
   signAccessToken,
   verifyAccessToken,
+  verifyOptionalToken,
   signRefreshToken,
   verifyRefreshToken,
 }

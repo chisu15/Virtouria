@@ -11,7 +11,7 @@ module.exports = (app) => {
     app.use(version + '/category', categoryRoute);
     app.use(version + '/culture', cultureRoute);
     app.use(version + '/mediafile', mediafileRoute);
-    // app.use(version + '/review', reviewRoute);
+    app.use(version + '/review', reviewRoute);
     app.use(version + '/tour', tourRoute);
     // app.use(version + '/user', userRoute);
     app.use(version + '/auth', authRoute);
