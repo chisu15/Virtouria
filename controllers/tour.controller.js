@@ -1,5 +1,7 @@
 const Tour = require('../models/tour.model')
 const { paginationDTO } = require('../models/default.dto')
+const fs = require('fs-extra');
+const path = require('path')
 
 module.exports.index = async (req, res) => {
   try {
@@ -8,7 +10,7 @@ module.exports.index = async (req, res) => {
     const tourList = await Tour.find({})
       .skip((page - 1) * size)
       .limit(size)
-      
+
     const total = await Tour.countDocuments({})
     if (tourList.length === 0) {
       return res.json({
@@ -115,6 +117,18 @@ module.exports.delete = async (req, res) => {
         code: 204,
         message: 'No tour found',
       })
+    }
+    const filesToDelete = []
+
+    if (tour.path.main) filesToDelete.push(tour.path.main)
+    if (tour.path.video.length > 0) filesToDelete.push(...tour.path.video)
+    if (tour.path.image.length > 0) filesToDelete.push(...tour.path.image)
+
+    for (const filePath of filesToDelete) {
+      const absolutePath = path.join(__dirname, '..', filePath)
+      if (await fs.pathExists(absolutePath)) {
+        await fs.remove(absolutePath)
+      }
     }
     await tour.deleteOne()
     res.json({
