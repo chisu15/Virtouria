@@ -151,7 +151,7 @@ module.exports.addReview = async (req, res) => {
       comments: { total: 0, list: [] },
       username: user ? user.username : `anonymous${Date.now()}`, 
       user_id: user ? user._id : null,
-      tour_id: body.tour_id,
+      culture_id: body.culture_id,
     })
 
     await newReview.save()

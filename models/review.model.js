@@ -48,9 +48,9 @@ const ReviewSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-    tour_id: {
+    culture_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Tour',
+      ref: 'Culture',
       required: true,
     },
   },
