@@ -182,8 +182,7 @@ module.exports.logout = async (req, res) => {
 
 module.exports.me = async (req, res) => {
   try {
-    const { id } = req.params
-    const user = await User.findById(id).select('-password')
+    const user = await User.findById(req.user._id).select('-password')
 
     if (!user) {
       return res.json({

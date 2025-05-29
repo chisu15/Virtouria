@@ -113,7 +113,7 @@ const { verifyRole } = require('../middlewares/verify.middleware');
 router.get('/', controller.index);
 router.post('/signup', controller.signup);
 router.post('/login', controller.login);
-router.get('/me/:id',  verifyRole(['user', 'admin']), controller.me);
+router.get('/me',  verifyRole(['user', 'admin']), controller.me);
 // router.post("/refresh-token", controller.refreshToken);
 
 module.exports = router
