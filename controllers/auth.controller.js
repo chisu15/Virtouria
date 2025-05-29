@@ -102,12 +102,15 @@ module.exports.login = async (req, res) => {
         code: 400,
         message: 'Invalid password',
       })
-
+    const userInfo = await User.findOne({
+      email,
+    }).select('-password')
     const accessToken = await signAccessToken(user._id)
     const refreshToken = await signRefreshToken(user._id)
     res.header('Authorization', `bearer ${accessToken}`).send({
       code: 200,
       message: 'Login success',
+      user: userInfo,
       accessToken: accessToken,
       refreshToken: refreshToken,
     })
@@ -122,7 +125,7 @@ module.exports.login = async (req, res) => {
 module.exports.delete = async (req, res) => {
   try {
     const { id } = req.params
-    const user = await User.findOne({ ID: id })
+    const user = await User.findOne({ _id: id })
     if (!user) {
       return res.json({
         code: 204,
