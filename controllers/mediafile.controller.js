@@ -75,7 +75,6 @@ module.exports.upload = async (req, res) => {
   try {
     console.log(req.body)
 
-    console.log(req.files)
     if (!req.files || req.files.length === 0 || !req.body.folder) {
       return res.status(400).json({
         code: 400,
@@ -101,7 +100,9 @@ module.exports.upload = async (req, res) => {
         type: file.mimetype,
         size: file.size,
         path: filePublicPath,
-        created_by: req.body.created_by
+        created_by: req.body.created_by,
+        position: req.body.position || null,
+        scale: JSON.parse(req.body.scale) || null
       })
 
       uploadedFiles.push({

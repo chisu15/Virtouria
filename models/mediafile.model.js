@@ -16,6 +16,14 @@ const MediaFileSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    position: {
+      x: Number,
+      y: Number,
+      z: Number,
+    },
+    scale: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
