@@ -1,4 +1,5 @@
 const User = require('../models/user.model')
+const MediaFile = require('../models/mediafile.model')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const createError = require('http-errors')
@@ -174,6 +175,30 @@ module.exports.logout = async (req, res) => {
     const token = req.header('Authorization').split(' ')[1]
     await Session.findOneAndUpdate({ token }, { expired: true })
     res.send('Logged out successfully')
+  } catch (error) {
+    res.json({ code: 400, error: error.message })
+  }
+}
+
+module.exports.me = async (req, res) => {
+  try {
+    const { id } = req.params
+    const user = await User.findById(id).select('-password')
+
+    if (!user) {
+      return res.json({
+        code: 204,
+        message: 'Not found user',
+      })
+    }
+    const mediaFiles = await MediaFile.find({ created_by: user._id })
+    return res.json({
+      code: 200,
+      data: {
+        ...user._doc,
+        mediafiles: mediaFiles,
+      },
+    })
   } catch (error) {
     res.json({ code: 400, error: error.message })
   }

@@ -110,9 +110,10 @@ const { verifyAccessToken } = require('../helpers/jwt_service');
 const { verifyRole } = require('../middlewares/verify.middleware');
 
 // router.get('/', controller.index);
-router.get('/', verifyRole('admin'), controller.index);
+router.get('/', controller.index);
 router.post('/signup', controller.signup);
 router.post('/login', controller.login);
+router.get('/me/:id',  verifyRole(['user', 'admin']), controller.me);
 // router.post("/refresh-token", controller.refreshToken);
 
 module.exports = router

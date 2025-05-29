@@ -101,6 +101,7 @@ module.exports.upload = async (req, res) => {
         type: file.mimetype,
         size: file.size,
         path: filePublicPath,
+        created_by: req.body.created_by
       })
 
       uploadedFiles.push({
