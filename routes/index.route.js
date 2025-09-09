@@ -3,6 +3,7 @@ const cultureRoute = require('./culture.route.js');
 const mediafileRoute = require('./mediafile.route.js');
 const reviewRoute = require('./review.route.js');
 const tourRoute = require('./tour.route.js');
+const eventRoute = require('./event.route.js');
 const userRoute = require('./user.route.js');
 const authRoute = require('./auth.route.js');
 
@@ -13,6 +14,7 @@ module.exports = (app) => {
     app.use(version + '/mediafile', mediafileRoute);
     app.use(version + '/review', reviewRoute);
     app.use(version + '/tour', tourRoute);
+    app.use(version + '/event', eventRoute);
     // app.use(version + '/user', userRoute);
     app.use(version + '/auth', authRoute);
   };

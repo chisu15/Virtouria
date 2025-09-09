@@ -17,12 +17,14 @@ const MediaFileSchema = new mongoose.Schema(
       ref: 'User',
     },
     position: {
-      x: Number,
-      y: Number,
-      z: Number,
+      x: {type: Number, required: false},
+      y: {type: Number, required: false},
+      z: {type: Number, required: false},
+
     },
     scale: {
       type: Number,
+      required: false,
     },
   },
   {

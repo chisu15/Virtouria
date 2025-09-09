@@ -102,7 +102,7 @@ module.exports.upload = async (req, res) => {
         path: filePublicPath,
         created_by: req.body.created_by,
         position: req.body.position || null,
-        scale: JSON.parse(req.body.scale) || null
+        scale: JSON.parse(req.body.scale||null) || null
       })
 
       uploadedFiles.push({
@@ -119,6 +119,7 @@ module.exports.upload = async (req, res) => {
       files: uploadedFiles,
     })
   } catch (error) {
+    throw error
     res.status(500).json({
       code: 500,
       error: error.message,
