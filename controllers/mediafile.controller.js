@@ -13,6 +13,7 @@ module.exports.index = async (req, res) => {
     const mediafileList = await Mediafile.find({})
       .skip((page - 1) * size)
       .limit(size)
+      .sort({ createdAt: -1 })
     const total = await Mediafile.countDocuments({})
     if (mediafileList.length === 0) {
       return res.json({
@@ -97,6 +98,8 @@ module.exports.upload = async (req, res) => {
       const filePublicPath = `public/${req.body.folder}/${newFileName}`
 
       const newMediaFile = await Mediafile.create({
+        title: req.body.title || '',
+        description: req.body.description || '',
         type: file.mimetype,
         size: file.size,
         path: filePublicPath,
@@ -119,7 +122,6 @@ module.exports.upload = async (req, res) => {
       files: uploadedFiles,
     })
   } catch (error) {
-    throw error
     res.status(500).json({
       code: 500,
       error: error.message,

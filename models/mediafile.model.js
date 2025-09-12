@@ -2,6 +2,14 @@ const mongoose = require('mongoose')
 
 const MediaFileSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: false,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
     type: {
       type: String,
       required: true,
