@@ -6,6 +6,10 @@ const MediaFileSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    thumbnail:{
+      type: String,
+      required: false,
+    },
     description: {
       type: String,
       required: false,

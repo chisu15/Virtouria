@@ -100,6 +100,7 @@ module.exports.upload = async (req, res) => {
       const newMediaFile = await Mediafile.create({
         title: req.body.title || '',
         description: req.body.description || '',
+        thumbnail: req.body.thumbnail || '',
         type: file.mimetype,
         size: file.size,
         path: filePublicPath,
