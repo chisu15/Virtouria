@@ -19,6 +19,8 @@ const EventSchema = new mongoose.Schema(
     streaming: {
       type: String,
     },
+    username: String,
+    password: String
   },
   {
     timestamps: true,
